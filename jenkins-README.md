@@ -2,6 +2,48 @@
 
 ans: jenkins ci cd to tool by using which i would be able to manage the entire continous intigration continous deployment  from the creation of pull request to the deployment continous delivering our newly created images in the dev and qa images and we would be using muitilple pliugin inorder to achive this like git SCM pluging and maven and sonarqube plugins.
 
+# what is shared librery, how it works in jenkins file?
+
+ans: Shared libraries in Jenkins Pipelines are reusable pieces of code that can be organized into functions and classes. These libraries allow you to encapsulate common logic, making it easier to maintain and share across multiple pipelines and projects.
+
+Advantages of Using Shared Libraries:
+code reuseability
+stanadization
+improved collabartion ease of maintanence
+
+To create shared librery:
+1. create Git repository.
+2. create vars directory
+3. define functions:
+    In the ‘vars’ directory, define your functions as Groovy files. Each file should contain a single function, with the filename serving as the function name. For example, if you have a function called `buildDockerImage`, create a file named `buildDockerImage.groovy` containing the function.
+4. commit and push:
+
+
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'docker:latest'
+    }
+
+    stages {
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    buildAndPushDockerImage(image: DOCKER_IMAGE)
+                }
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    // Deploy to Kubernetes using the shared library function
+                    deployToKubernetes(deploymentName: 'myapp', image: DOCKER_IMAGE)
+                }
+            }
+        }
+    }
+}
 # what kind of plugins you have written in jenkins?
 
 ans: i have worked on multiple pipeline and diclarative pipeline  and scripted pipelines 
